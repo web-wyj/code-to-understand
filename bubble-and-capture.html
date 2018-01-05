@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>bubble-and-capture</title>
+    <style>
+        .d1{
+            height:300px;
+            width:300px;
+            background-color:red;
+        }
+        .d2{
+            height:200px;
+            width:200px;
+            background-color:yellow;
+        }
+        .d3{
+            height:100px;
+            width:100px;
+            background-color:blue;
+        }
+    </style>
+</head>
+<body>
+    <p>capture = false; (default) 事件冒泡：</p>
+    <div id="bubble">
+        <div class="d1">d1
+            <div class="d2">d2↑
+                <div class="d3">d3↑</div>
+            </div>
+        </div>
+    </div>
+
+    <p>capture = true; 事件捕获：</p>
+    <div id="capture">
+        <div class="d1">d1↓
+            <div class="d2">d2↓
+                <div class="d3">d3</div>
+            </div>
+        </div>
+    </div>
+
+    <p>capture = false; 事件冒泡的阻止：</p>
+    <div id="bubble-stop">
+        <div class="d1">d1
+            <div class="d2">d2↑
+                <div class="d3">d3↑</div>
+            </div>
+        </div>
+    </div>
+
+    <p>capture = true; 事件捕获的阻止：</p>
+    <div id="capture-stop">
+        <div class="d1">d1↓
+            <div class="d2">d2↓
+                <div class="d3">d3</div>
+            </div>
+        </div>
+    </div>
+
+    <p>capture = false; 事件冒泡的阻止（2次事件注册）：</p>
+    <div id="bubble-stop-2">
+        <div class="d1">d1
+            <div class="d2">d2↑
+                <div class="d3">d3↑</div>
+            </div>
+        </div>
+    </div>
+
+    <p>capture = false; 事件冒泡的立刻阻止（2次事件注册）：</p>
+    <div id="bubble-stop-imm">
+        <div class="d1">d1
+            <div class="d2">d2↑
+                <div class="d3">d3↑</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var bubble = document.getElementById('bubble');
+        var capture = document.getElementById('capture');
+        var bubbleStop = document.getElementById('bubble-stop');
+        var captureStop = document.getElementById('capture-stop');
+        var bubbleStop2 = document.getElementById('bubble-stop-2');
+        var bubbleImmStop = document.getElementById('bubble-stop-imm');
+
+        function regCapture(parent,target,useCapture,stopPropagation,stopImmediatePropagation){
+            parent.getElementsByClassName(target)[0].addEventListener('click',function(event){
+                console.log("[" + target + " - click] target:",event.target.tagName,event.target.className);
+                if(stopPropagation){
+                    event.stopPropagation();
+                }
+                if(stopImmediatePropagation){
+                    event.stopImmediatePropagation();
+                }
+            },useCapture);
+        }
+        regCapture(bubble,'d1',false);
+        regCapture(bubble,'d2',false);
+        regCapture(bubble,'d3',false);
+        regCapture(capture,'d1',true);
+        regCapture(capture,'d2',true);
+        regCapture(capture,'d3',true);
+        regCapture(bubbleStop,'d1',false,true);
+        regCapture(bubbleStop,'d2',false,true);
+        regCapture(bubbleStop,'d3',false,true);
+        regCapture(captureStop,'d1',true,true);
+        regCapture(captureStop,'d2',true,true);
+        regCapture(captureStop,'d3',true,true);
+        regCapture(bubbleStop2,'d1',false,true);
+        regCapture(bubbleStop2,'d2',false,true);
+        regCapture(bubbleStop2,'d3',false,true);
+        regCapture(bubbleStop2,'d1',false,true);
+        regCapture(bubbleStop2,'d2',false,true);
+        regCapture(bubbleStop2,'d3',false,true);
+        regCapture(bubbleImmStop,'d1',false,false,true);
+        regCapture(bubbleImmStop,'d2',false,false,true);
+        regCapture(bubbleImmStop,'d3',false,false,true);
+        regCapture(bubbleImmStop,'d1',false,false,true);
+        regCapture(bubbleImmStop,'d2',false,false,true);
+        regCapture(bubbleImmStop,'d3',false,false,true);
+
+        // bubble.getElementsByClassName('d1')[0].addEventListener('click',function(event){
+        //     console.log("[d1 - click] target:",event.target.tagName,event.target.className);
+        // },false);
+        // bubble.getElementsByClassName('d2')[0].addEventListener('click',function(event){
+        //     console.log("[d2 - click] target:",event.target.tagName,event.target.className);
+        // },false);
+        // bubble.getElementsByClassName('d3')[0].addEventListener('click',function(event){
+        //     console.log("[d3 - click] target:",event.target.tagName,event.target.className);
+        // },false);
+
+        // capture.getElementsByClassName('d1')[0].addEventListener('click',function(event){
+        //     console.log("[d1 - click] target:",event.target.tagName,event.target.className);
+        // },true);
+        // capture.getElementsByClassName('d2')[0].addEventListener('click',function(event){
+        //     console.log("[d2 - click] target:",event.target.tagName,event.target.className);
+        // },true);
+        // capture.getElementsByClassName('d3')[0].addEventListener('click',function(event){
+        //     console.log("[d3 - click] target:",event.target.tagName,event.target.className);
+        // },true);
+
+        // bubbleStop.getElementsByClassName('d1')[0].addEventListener('click',function(event){
+        //     console.log("[d1 - click] target:",event.target.tagName,event.target.className);
+        //     event.stopPropagation();
+        // },false);
+        // bubbleStop.getElementsByClassName('d2')[0].addEventListener('click',function(event){
+        //     console.log("[d2 - click] target:",event.target.tagName,event.target.className);
+        //     event.stopPropagation();
+        // },false);
+        // bubbleStop.getElementsByClassName('d3')[0].addEventListener('click',function(event){
+        //     console.log("[d3 - click] target:",event.target.tagName,event.target.className);
+        //     event.stopPropagation();
+        // },false);
+
+        // captureStop.getElementsByClassName('d1')[0].addEventListener('click',function(event){
+        //     console.log("[d1 - click] target:",event.target.tagName,event.target.className);
+        //     event.stopPropagation();
+        // },true);
+        // captureStop.getElementsByClassName('d2')[0].addEventListener('click',function(event){
+        //     console.log("[d2 - click] target:",event.target.tagName,event.target.className);
+        //     event.stopPropagation();
+        // },true);
+        // captureStop.getElementsByClassName('d3')[0].addEventListener('click',function(event){
+        //     console.log("[d3 - click] target:",event.target.tagName,event.target.className);
+        //     event.stopPropagation();
+        // },true);
+
+        // bubbleImmStop.getElementsByClassName('d1')[0].addEventListener('click',function(event){
+        //     console.log("[d1 - click] target:",event.target.tagName,event.target.className);
+        //     event.stopImmediatePropagation();
+        // },false);
+        // bubbleImmStop.getElementsByClassName('d2')[0].addEventListener('click',function(event){
+        //     console.log("[d2 - click] target:",event.target.tagName,event.target.className);
+        //     event.stopImmediatePropagation();
+        // },false);
+        // bubbleImmStop.getElementsByClassName('d3')[0].addEventListener('click',function(event){
+        //     console.log("[d3 - click] target:",event.target.tagName,event.target.className);
+        //     event.stopImmediatePropagation();
+        // },false);
+        // bubbleImmStop.getElementsByClassName('d1')[0].addEventListener('click',function(event){
+        //     console.log("[d1 - click] target:",event.target.tagName,event.target.className);
+        //     event.stopImmediatePropagation();
+        // },false);
+        // bubbleImmStop.getElementsByClassName('d2')[0].addEventListener('click',function(event){
+        //     console.log("[d2 - click] target:",event.target.tagName,event.target.className);
+        //     event.stopImmediatePropagation();
+        // },false);
+        // bubbleImmStop.getElementsByClassName('d3')[0].addEventListener('click',function(event){
+        //     console.log("[d3 - click] target:",event.target.tagName,event.target.className);
+        //     event.stopImmediatePropagation();
+        // },false);
+        
+        alert("<F12> console 中查看事件冒泡与事件捕获的不同效果");
+    </script>
+</body>
+</html>
