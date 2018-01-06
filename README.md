@@ -18,5 +18,5 @@
 不考虑汉字的顶部差，底部基线填充约为1/3
 ```
 关于baseline的概念与css的关系，可在下列问题回答中了解：
-*[知乎 - 中文到底有没有基线（baseline）的概念？](https://www.zhihu.com/question/22183501)
-*[SegmengtFault - img的间隙](https://segmentfault.com/a/1190000006808606)
+* [知乎 - 中文到底有没有基线（baseline）的概念？](https://www.zhihu.com/question/22183501)
+* [SegmengtFault - img的间隙](https://segmentfault.com/a/1190000006808606)
